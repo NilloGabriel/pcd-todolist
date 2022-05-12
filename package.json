@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "pcd-todolist",
+  "version": "1.0.0",
+  "description": "Criando um aplicativo CRUD de lista de afazeres com NodeJS e MySQL.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabriel D'Nillo Farias da Cruz",
+  "license": "MIT License",
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "readline-sync": "^1.4.10"
+  }
+}
