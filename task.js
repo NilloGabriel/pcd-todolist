@@ -72,3 +72,59 @@ function getAllTasks() {
     }
   })
 }
+
+function createTask(newContent, newStatus) {
+  do {
+    newContent = readline.question('\nQual o conteúdo da tarefa?\n')
+
+    if (newContent == '') {
+      console.log('O texto não pode ser vazio... Tente novamente...')
+    }
+  } while (newContent == '')
+
+  readline.setDefaultOptions({
+    limit: ['1', '2', '3']
+  })
+  newStatus = readline.question(
+    '\nQual o status da tarefa? [1 - Pendente | 2 - Em andamento | 3 - Completo]\n',
+    {
+      limitMessage:
+        'Desculpe, esse campo aceita apenas números inteiros de 1 até 3... Tente novamente...'
+    }
+  )
+
+  switch (newStatus) {
+    case '1':
+      newStatus = 'Pendente'
+      break
+    case '2':
+      newStatus = 'Em andamento'
+      break
+    case '3':
+      newStatus = 'Completo'
+  }
+
+  db.connection.connect(function (err) {
+    if (err) {
+      console.log('Não há conexão com o banco de dados...')
+      throw err
+    } else {
+      query(
+        `INSERT INTO todo(content, isDone) VALUES ('${newContent}', '${newStatus}')`,
+        function (err, result) {
+          if (err) {
+            console.log(
+              'Não foi possível inserir novas tarefas no banco de dados...'
+            )
+            throw err
+          } else {
+            console.log(
+              `Nova tarefa com o ID ${result.insertId} foi adicionada.`
+            )
+          }
+        }
+      )
+    }
+    db.connection.end()
+  })
+}
