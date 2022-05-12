@@ -128,3 +128,9 @@ function createTask(newContent, newStatus) {
     db.connection.end()
   })
 }
+
+module.exports = {
+  getSingleTaskById,
+  getAllTasks,
+  createTask
+}
