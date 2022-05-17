@@ -64,8 +64,8 @@ function getAllTasks() {
           '\nNão existe tarefas no banco de dados... Tente novamente...'
         )
       }
-    } catch (error) {
-      console.log('Não há conexão com o banco de dados...', error.message)
+    } catch (e) {
+      console.log('Não há conexão com o banco de dados...')
       throw err
     } finally {
       db.connection.end()
@@ -124,6 +124,69 @@ function createTask(newContent, newStatus) {
           }
         }
       )
+    }
+    db.connection.end()
+  })
+}
+
+function updateTask(updateTaskId, newContent, newStatus) {
+  updateTaskId = readline.questionInt(
+    '\nQual o id da tarefa que você quer atualizar?\n',
+    {
+      limitMessage:
+        'Desculpe, esse campo aceita apenas números inteiros... Tente novamente...'
+    }
+  )
+
+  do {
+    newContent = readline.question('\nQual o novo conteúdo da tarefa?\n')
+
+    if (newContent == '') {
+      console.log('O texto não pode ser vazio... Tente novamente...')
+    }
+  } while (newContent == '')
+
+  readline.setDefaultOptions({
+    limit: ['1', '2', '3']
+  })
+  newStatus = readline.question(
+    '\nQual o novo status da tarefa? [1 - Pendente | 2 - Em andamento | 3 - Completo]\n',
+    {
+      limitMessage:
+        'Desculpe, esse campo aceita apenas números inteiros de 1 até 3... Tente novamente...'
+    }
+  )
+
+  switch (newStatus) {
+    case '1':
+      newStatus = 'Pendente'
+      break
+    case '2':
+      newStatus = 'Em andamento'
+      break
+    case '3':
+      newStatus = 'Completo'
+  }
+
+  db.connection.connect(async function (err) {
+    if (err) {
+      console.log('Não há conexão com o banco de dados...')
+      throw err
+    } else {
+      let rowUpdateTask = []
+      ;(rowUpdateTask = await query(
+        `SELECT content, isDone FROM todo WHERE id IN (${updateTaskId})`
+      )),
+        query(
+          `UPDATE todo SET content='${newContent}', isDone='${newStatus}' WHERE id='${updateTaskId}'`
+        )
+      if (rowUpdateTask.length != 0) {
+        console.log(`A tarefa com o ID ${updateTaskId} foi atualizada.`)
+      } else {
+        console.log(
+          `\nNão existe essa tarefa no banco de dados com o ID = ${updateTaskId}... Tente novamente...`
+        )
+      }
     }
     db.connection.end()
   })
