@@ -192,6 +192,37 @@ function updateTask(updateTaskId, newContent, newStatus) {
   })
 }
 
+function deleteTaskById(deleteTaskId) {
+  deleteTaskId = readline.questionInt(
+    '\nQual o id da tarefa que você quer deletar?\n',
+    {
+      limitMessage:
+        'Desculpe, esse campo aceita apenas números inteiros... Tente novamente...'
+    }
+  )
+
+  db.connection.connect(async function (err) {
+    if (err) {
+      console.log('Não há conexão com o banco de dados...')
+      throw err
+    } else {
+      let rowUpdateTask = []
+      ;(rowUpdateTask = await query(
+        `SELECT content, isDone FROM todo WHERE id IN (${deleteTaskId})`
+      )),
+        query(`DELETE FROM todo WHERE id='${deleteTaskId}'`)
+      if (rowUpdateTask.length != 0) {
+        console.log(`A tarefa com o ID ${deleteTaskId} foi removida.`)
+      } else {
+        console.log(
+          `\nNão existe essa tarefa no banco de dados com o ID = ${deleteTaskId}... Tente novamente...`
+        )
+      }
+    }
+    db.connection.end()
+  })
+}
+
 module.exports = {
   getSingleTaskById,
   getAllTasks,
