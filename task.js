@@ -5,6 +5,8 @@ const util = require('util')
 const query = util.promisify(db.connection.query).bind(db.connection)
 
 function getSingleTaskById(getTaskId) {
+  console.log('\n===== BUSCAR TAREFA =====')
+
   getTaskId = readline.questionInt(
     '\nQual o id da tarefa que você quer buscar?\n',
     {
@@ -43,6 +45,8 @@ function getSingleTaskById(getTaskId) {
 }
 
 function getAllTasks() {
+  console.log('\n===== LISTAR TAREFAS =====')
+
   db.connection.connect(async function (err) {
     try {
       let rowAllFoundTasks = []
@@ -74,6 +78,8 @@ function getAllTasks() {
 }
 
 function createTask(newContent, newStatus) {
+  console.log('\n===== ADICIONAR TAREFA =====')
+
   do {
     newContent = readline.question('\nQual o conteúdo da tarefa?\n')
 
@@ -130,6 +136,8 @@ function createTask(newContent, newStatus) {
 }
 
 function updateTask(updateTaskId, newContent, newStatus) {
+  console.log('\n===== ALTERAR TAREFA =====')
+
   updateTaskId = readline.questionInt(
     '\nQual o id da tarefa que você quer atualizar?\n',
     {
@@ -193,6 +201,8 @@ function updateTask(updateTaskId, newContent, newStatus) {
 }
 
 function deleteTaskById(deleteTaskId) {
+  console.log('\n===== DELETAR TAREFA =====')
+
   deleteTaskId = readline.questionInt(
     '\nQual o id da tarefa que você quer deletar?\n',
     {
@@ -226,5 +236,7 @@ function deleteTaskById(deleteTaskId) {
 module.exports = {
   getSingleTaskById,
   getAllTasks,
-  createTask
+  createTask,
+  updateTask,
+  deleteTaskById
 }
