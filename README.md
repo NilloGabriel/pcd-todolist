@@ -37,7 +37,7 @@ $ mysql -uroot
 mysql> CREATE USER '<username>'@'localhost' IDENTIFIED WITH mysql_native_password BY '<password>';
 ```
 
-Após criar o usuário preencha o <'username'> e o <'password'> no arquivo [db.js](https://github.com/XatubaPox/pcd-todolist/blob/main/db.js).
+Após criar o usuário preencha o <'username'> e o <'password'> no arquivo [db.js](https://github.com/NilloGabriel/pcd-todolist/blob/main/db.js).
 
 Conceda privilégios para esse usuário (pode conceder menos privilégios se quiser):
 
